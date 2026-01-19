@@ -1,4 +1,5 @@
-using System.Text.Json.Serialization;
+using NativeAotExample.Json;
+using NativeAotExample.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,19 +24,3 @@ app.MapOpenApi();
 app.MapGet("/orders", (IOrderService svc) => svc.GetOrders());
 
 app.Run();
-
-[JsonSerializable(typeof(List<OrderDto>))]
-public partial class MyJsonContext : JsonSerializerContext { }
-
-public record OrderDto(int Id, decimal Amount);
-
-public interface IOrderService
-{
-    List<OrderDto> GetOrders();
-}
-
-public class OrderService : IOrderService
-{
-    public List<OrderDto> GetOrders() =>
-        [new(1, 100_000), new(2, 250_000)];
-}
